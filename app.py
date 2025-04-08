@@ -8,16 +8,19 @@ import pytz # For timezone handling
 from pathlib import Path # For safer filename handling
 
 
-
-hide_streamlit_style = """
+hide_menu_footer_style = """
             <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;} /* Optionally hide the footer too */
-            header {visibility: hidden;} /* Optionally hide the header bar */
+            /* Hide the main menu (hamburger icon) */
+            #MainMenu { display: none; }
+
+            /* Hide the footer where "Made with Streamlit" is */
+            footer { display: none; }
+
+            /* You can also try hiding the header if the menu button persists */
+            /* header { display: none; } */
             </style>
             """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
+st.markdown(hide_menu_footer_style, unsafe_allow_html=True)
 
 
 # --- Configuration ---
