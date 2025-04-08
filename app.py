@@ -416,22 +416,22 @@ else:
     st.info("Cache is currently empty or expired.")
 
 
-# (API Access Info section remains the same)
-st.markdown("---")
-st.subheader("API Access")
-st.write("To retrieve the data from another device/script, use a GET request to the following URL structure:")
-try:
-    from streamlit.web.server import Server
-    server_address = Server.get_current()._get_server_address_for_client(include_path=False)
-    app_url_guess = f"https://{server_address}" # Assuming HTTPS for cloud
-    if "localhost" in server_address or "0.0.0.0" in server_address:
-         app_url_guess = f"http://{server_address}" # Assuming HTTP for local
-    st.code(f"{app_url_guess}?action=get_data&key=YOUR_API_KEY", language=None)
-    st.caption("Note: Auto-detected URL might be incorrect. Use your app's public Streamlit Cloud URL.")
-except Exception:
-     st.code(f"YOUR_APP_URL?action=get_data&key=YOUR_API_KEY", language=None)
-     st.caption("Replace `YOUR_APP_URL` with this app's public URL.")
-st.write("Replace `YOUR_API_KEY` with the key configured in the Streamlit secrets.")
-st.warning("""
-**API Retrieval Notes:** Text is returned in a code block. Files/Images return a page with a download button and potentially an image preview. Direct raw file download via simple GET is not supported.
-""")
+# # (API Access Info section remains the same)
+# st.markdown("---")
+# st.subheader("API Access")
+# st.write("To retrieve the data from another device/script, use a GET request to the following URL structure:")
+# try:
+#     from streamlit.web.server import Server
+#     server_address = Server.get_current()._get_server_address_for_client(include_path=False)
+#     app_url_guess = f"https://{server_address}" # Assuming HTTPS for cloud
+#     if "localhost" in server_address or "0.0.0.0" in server_address:
+#          app_url_guess = f"http://{server_address}" # Assuming HTTP for local
+#     st.code(f"{app_url_guess}?action=get_data&key=YOUR_API_KEY", language=None)
+#     st.caption("Note: Auto-detected URL might be incorrect. Use your app's public Streamlit Cloud URL.")
+# except Exception:
+#      st.code(f"YOUR_APP_URL?action=get_data&key=YOUR_API_KEY", language=None)
+#      st.caption("Replace `YOUR_APP_URL` with this app's public URL.")
+# st.write("Replace `YOUR_API_KEY` with the key configured in the Streamlit secrets.")
+# st.warning("""
+# **API Retrieval Notes:** Text is returned in a code block. Files/Images return a page with a download button and potentially an image preview. Direct raw file download via simple GET is not supported.
+# """)
