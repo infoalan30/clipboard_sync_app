@@ -184,24 +184,21 @@ st.caption("Paste text and save it, or upload a file/image (saved automatically)
 
 
 
-
 # --- Live Clock Component using JavaScript ---
 try:
-    # Get the target timezone string from the global configuration
-    # TARGET_TIMEZONE = "Asia/Shanghai" # No need to redefine here
+    # Get the target timezone string from your configuration
+    TARGET_TIMEZONE = "Asia/Shanghai" # Ensure this matches your config
 
-    # Validate the global timezone setting
+    # Optional but recommended: Validate timezone using pytz
     try:
-        # Use the globally defined TARGET_TIMEZONE
         pytz.timezone(TARGET_TIMEZONE)
-        # This variable holds the validated timezone string for JavaScript
         js_timezone_string = TARGET_TIMEZONE
     except pytz.UnknownTimeZoneError:
         st.warning(f"Invalid Timezone '{TARGET_TIMEZONE}' configured. Clock may show client's local time or UTC as fallback.")
-        js_timezone_string = "UTC" # Fallback timezone
+        # Fallback for JS - using UTC is often safer than letting it guess wrongly
+        js_timezone_string = "UTC"
 
     # Define the HTML structure and the JavaScript logic
-    # Ensure the f-string uses the correct Python variable: {js_timezone_string}
     live_clock_html = f"""
     <div id="live-clock-container" style="font-size: 0.9em; color: grey; margin-bottom: 10px;">
         <span id="live-clock">Loading current time...</span>
@@ -209,49 +206,50 @@ try:
 
     <script>
         const clockElement = document.getElementById('live-clock');
-        // *** CRITICAL FIX AREA ***
-        // Pass the validated Python variable 'js_timezone_string' into the JavaScript constant 'targetTimezone'
-        const targetTimezone = "{js_timezone_string}";
-        // *** END CRITICAL FIX AREA ***
+        const targetTimezone = "{js_timezone_string}"; // Get timezone from Python
 
         function updateClock() {{
             try {{
                 const now = new Date();
+                // Options for formatting date and time in the target timezone
                 const options = {{
-                    // Use the JavaScript 'targetTimezone' constant here
                     timeZone: targetTimezone,
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit',
-                    hour12: false
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false // Use 24-hour format
                 }};
-                const formatter = new Intl.DateTimeFormat(undefined, options);
+                // Use Intl.DateTimeFormat for reliable cross-browser formatting
+                const formatter = new Intl.DateTimeFormat(undefined, options); // 'undefined' uses client's locale for format style
                 const formattedTime = formatter.format(now);
 
-                // Use the JavaScript 'targetTimezone' constant here for display
-                clockElement.innerText = `🕒 Current Time (${{targetTimezone}}): ${{formattedTime}}`; // Note: Escaped curly braces {{}} for JS template literal inside f-string
+                // Update the HTML element
+                clockElement.innerText = `🕒 Current Time ({targetTimezone}): ${formattedTime}`;
 
             }} catch (error) {{
                 console.error("Error updating live clock:", error);
-                // Use the JavaScript 'targetTimezone' constant here
-                clockElement.innerText = `Error displaying time for timezone: ${{targetTimezone}}`; // Note: Escaped curly braces
+                clockElement.innerText = `Error displaying time for timezone: ${targetTimezone}`;
+                // Stop updates if there's an error to prevent flooding console
                 clearInterval(clockInterval);
             }}
         }}
 
+        // Update the clock immediately when the script loads
         updateClock();
+
+        // Set interval to update the clock every second (1000 milliseconds)
         const clockInterval = setInterval(updateClock, 1000);
+
+        // Note: Streamlit components don't have a built-in 'unmount' cleanup hook
+        // easily accessible here. The interval will technically keep running in the
+        // background until the page is fully reloaded or closed. This is usually
+        // not a major issue for a simple clock.
 
     </script>
     """
-
-    # Embed the HTML/JS component into the Streamlit app
-    st.components.v1.html(live_clock_html, height=35) # Adjust height as needed
-
-except Exception as e:
-    # This catches Python errors during the setup phase (like the NameError)
-    st.error(f"Failed to display live clock: {e}")
-
-
 
 
 
