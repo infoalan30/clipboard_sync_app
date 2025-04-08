@@ -184,6 +184,7 @@ st.caption("Paste text and save it, or upload a file/image (saved automatically)
 
 
 
+
 # --- Live Clock Component using JavaScript ---
 try:
     # Get the target timezone string from your configuration
@@ -250,6 +251,15 @@ try:
 
     </script>
     """
+
+    # Embed the HTML/JS component into the Streamlit app
+    st.components.v1.html(live_clock_html, height=35) # Adjust height as needed
+
+except Exception as e:
+    st.error(f"Failed to display live clock: {e}")
+
+
+
 
 
 
