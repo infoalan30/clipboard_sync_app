@@ -188,7 +188,6 @@ def handle_api_request():
             st.stop()
 
 # --- Main App UI ---
-st.set_page_config(layout="wide")
 handle_api_request() # Check for API requests first
 
 
