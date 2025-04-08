@@ -10,7 +10,7 @@ from pathlib import Path # For safer filename handling
 
 hide_streamlit_style = """
             <style>
-            MainMenu {visibility: hidden;}
+            header {visibility: hidden;} /* Optionally hide the header bar */
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
