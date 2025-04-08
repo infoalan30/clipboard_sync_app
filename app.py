@@ -7,6 +7,26 @@ import mimetypes # To guess file type
 import pytz # For timezone handling
 from pathlib import Path # For safer filename handling
 
+# 隐藏 GitHub 图标
+hide_github_icon = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    .css-1v983cf {visibility: hidden;}  /* 针对 GitHub 图标的具体类名可能需要调整 */
+    </style>
+"""
+st.markdown(hide_github_icon, unsafe_allow_html=True)
+# 隐藏脚注
+hide_footer = """
+    <style>
+    footer {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_footer, unsafe_allow_html=True)
+
+
+
+
+
 # --- Configuration ---
 CACHE_TTL_SECONDS = 150000 # 5 minutes
 TARGET_TIMEZONE = "Asia/Shanghai" # Or choose another like "UTC", "America/New_York" etc.
