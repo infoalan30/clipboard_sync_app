@@ -415,7 +415,7 @@ else:
     # If timestamp was None initially
     st.info("Cache is currently empty or expired.")
 
-
+st.stop()
 # # (API Access Info section remains the same)
 # st.markdown("---")
 # st.subheader("API Access")
