@@ -9,7 +9,14 @@ from pathlib import Path # For safer filename handling
 
 
 
-
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;} /* Optionally hide the footer too */
+            header {visibility: hidden;} /* Optionally hide the header bar */
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 
@@ -183,23 +190,6 @@ def handle_api_request():
 # --- Main App UI ---
 st.set_page_config(layout="wide")
 handle_api_request() # Check for API requests first
-
-
-# 隐藏 GitHub 图标
-hide_github_icon = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    .css-1v983cf {visibility: hidden;}  /* 针对 GitHub 图标的具体类名可能需要调整 */
-    </style>
-"""
-st.markdown(hide_github_icon, unsafe_allow_html=True)
-# 隐藏脚注
-hide_footer = """
-    <style>
-    footer {visibility: hidden;}
-    </style>
-"""
-st.markdown(hide_footer, unsafe_allow_html=True)
 
 
 st.title("☁️ Simple Clipboard Sync")
