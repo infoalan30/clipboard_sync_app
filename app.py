@@ -11,7 +11,7 @@ from pathlib import Path # For safer filename handling
 hide_menu_footer_style = """
             <style>
             /* Hide the main menu (hamburger icon) */
-            #MainMenu { display: none; }
+            MainMenu { display: none; }
 
             /* Hide the footer where "Made with Streamlit" is */
             footer { display: none; }
