@@ -10,14 +10,10 @@ from pathlib import Path # For safer filename handling
 
 hide_menu_footer_style = """
             <style>
-            /* Hide the main menu (hamburger icon) */
-            MainMenu { display: none; }
-
             /* Hide the footer where "Made with Streamlit" is */
             footer { display: none; }
-
             /* You can also try hiding the header if the menu button persists */
-            /* header { display: none; } */
+            header { display: none; }
             </style>
             """
 st.markdown(hide_menu_footer_style, unsafe_allow_html=True)
