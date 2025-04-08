@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit.components.v1 import html
 import time
 from datetime import datetime, timedelta
 import io
@@ -180,11 +181,96 @@ handle_api_request() # Check for API requests first
 st.title("☁️ Simple Clipboard Sync")
 st.caption("Paste text and save it, or upload a file/image (saved automatically). Retrieve via API URL.")
 
+
+
+
+
+# --- Live Clock Component using JavaScript ---
 try:
-    now_local = get_local_time()
-    st.write(f"🕒 Current Server Time ({TARGET_TIMEZONE}): {now_local.strftime('%Y-%m-%d %H:%M:%S')}")
+    # Get the target timezone string from your configuration
+    TARGET_TIMEZONE = "Asia/Shanghai" # Ensure this matches your config
+
+    # Optional but recommended: Validate timezone using pytz
+    try:
+        pytz.timezone(TARGET_TIMEZONE)
+        js_timezone_string = TARGET_TIMEZONE
+    except pytz.UnknownTimeZoneError:
+        st.warning(f"Invalid Timezone '{TARGET_TIMEZONE}' configured. Clock may show client's local time or UTC as fallback.")
+        # Fallback for JS - using UTC is often safer than letting it guess wrongly
+        js_timezone_string = "UTC"
+
+    # Define the HTML structure and the JavaScript logic
+    live_clock_html = f"""
+    <div id="live-clock-container" style="font-size: 0.9em; color: grey; margin-bottom: 10px;">
+        <span id="live-clock">Loading current time...</span>
+    </div>
+
+    <script>
+        const clockElement = document.getElementById('live-clock');
+        const targetTimezone = "{js_timezone_string}"; // Get timezone from Python
+
+        function updateClock() {{
+            try {{
+                const now = new Date();
+                // Options for formatting date and time in the target timezone
+                const options = {{
+                    timeZone: targetTimezone,
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false // Use 24-hour format
+                }};
+                // Use Intl.DateTimeFormat for reliable cross-browser formatting
+                const formatter = new Intl.DateTimeFormat(undefined, options); // 'undefined' uses client's locale for format style
+                const formattedTime = formatter.format(now);
+
+                // Update the HTML element
+                clockElement.innerText = `🕒 Current Time ({targetTimezone}): ${formattedTime}`;
+
+            }} catch (error) {{
+                console.error("Error updating live clock:", error);
+                clockElement.innerText = `Error displaying time for timezone: ${targetTimezone}`;
+                // Stop updates if there's an error to prevent flooding console
+                clearInterval(clockInterval);
+            }}
+        }}
+
+        // Update the clock immediately when the script loads
+        updateClock();
+
+        // Set interval to update the clock every second (1000 milliseconds)
+        const clockInterval = setInterval(updateClock, 1000);
+
+        // Note: Streamlit components don't have a built-in 'unmount' cleanup hook
+        // easily accessible here. The interval will technically keep running in the
+        // background until the page is fully reloaded or closed. This is usually
+        // not a major issue for a simple clock.
+
+    </script>
+    """
+
+    # Embed the HTML/JS component into the Streamlit app
+    st.components.v1.html(live_clock_html, height=35) # Adjust height as needed
+
 except Exception as e:
-    st.warning(f"Could not display local time: {e}")
+    st.error(f"Failed to display live clock: {e}")
+
+
+
+
+
+
+
+
+# try:
+#     now_local = get_local_time()
+#     st.write(f"🕒 Current Server Time ({TARGET_TIMEZONE}): {now_local.strftime('%Y-%m-%d %H:%M:%S')}")
+# except Exception as e:
+#     st.warning(f"Could not display local time: {e}")
+
 
 st.markdown("---")
 
