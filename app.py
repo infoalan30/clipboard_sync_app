@@ -8,7 +8,7 @@ import pytz # For timezone handling
 from pathlib import Path # For safer filename handling
 
 # --- Configuration ---
-CACHE_TTL_SECONDS = 1500 # 5 minutes
+CACHE_TTL_SECONDS = 150000 # 5 minutes
 TARGET_TIMEZONE = "Asia/Shanghai" # Or choose another like "UTC", "America/New_York" etc.
 
 # --- Helper Functions ---
