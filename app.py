@@ -196,82 +196,36 @@ st.caption("Paste text and save it, or upload a file/image (saved automatically)
 
 
 # --- Live Clock Component using JavaScript ---
-try:
-    # Get the target timezone string from the global configuration
-    # TARGET_TIMEZONE = "Asia/Shanghai" # No need to redefine here
-
-    # Validate the global timezone setting
-    try:
-        # Use the globally defined TARGET_TIMEZONE
-        pytz.timezone(TARGET_TIMEZONE)
-        # This variable holds the validated timezone string for JavaScript
-        js_timezone_string = TARGET_TIMEZONE
-    except pytz.UnknownTimeZoneError:
-        st.warning(f"Invalid Timezone '{TARGET_TIMEZONE}' configured. Clock may show client's local time or UTC as fallback.")
-        js_timezone_string = "UTC" # Fallback timezone
-
-    # Define the HTML structure and the JavaScript logic
-    # Ensure the f-string uses the correct Python variable: {js_timezone_string}
-    live_clock_html = f"""
-    <div id="live-clock-container" style="font-size: 0.9em; color: grey; margin-bottom: 10px;">
-        <span id="live-clock">Loading current time...</span>
-    </div>
-
-    <script>
-        const clockElement = document.getElementById('live-clock');
-        // *** CRITICAL FIX AREA ***
-        // Pass the validated Python variable 'js_timezone_string' into the JavaScript constant 'targetTimezone'
-        const targetTimezone = "{js_timezone_string}";
-        // *** END CRITICAL FIX AREA ***
-
-        function updateClock() {{
-            try {{
-                const now = new Date();
-                const options = {{
-                    // Use the JavaScript 'targetTimezone' constant here
-                    timeZone: targetTimezone,
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit',
-                    hour12: false
-                }};
-                const formatter = new Intl.DateTimeFormat(undefined, options);
-                const formattedTime = formatter.format(now);
-
-                // Use the JavaScript 'targetTimezone' constant here for display
-                clockElement.innerText = `🕒 Current Time (${{targetTimezone}}): ${{formattedTime}}`; // Note: Escaped curly braces {{}} for JS template literal inside f-string
-
-            }} catch (error) {{
-                console.error("Error updating live clock:", error);
-                // Use the JavaScript 'targetTimezone' constant here
-                clockElement.innerText = `Error displaying time for timezone: ${{targetTimezone}}`; // Note: Escaped curly braces
-                clearInterval(clockInterval);
-            }}
-        }}
-
-        updateClock();
-        const clockInterval = setInterval(updateClock, 1000);
-
-    </script>
-    """
-
-    # Embed the HTML/JS component into the Streamlit app
-    st.components.v1.html(live_clock_html, height=35) # Adjust height as needed
-
-except Exception as e:
-    # This catches Python errors during the setup phase (like the NameError)
-    st.error(f"Failed to display live clock: {e}")
+TARGET_TIMEZONE = "Asia/Shanghai"
+live_clock_html = f"""
+<div id="live-clock-container" style="font-size: 0.9em; color: grey; margin-bottom: 10px;">
+    <span id="live-clock">正在加载当前时间...</span>
+</div>
+<script>
+    const clockElement = document.getElementById('live-clock');
+    const targetTimezone = "{TARGET_TIMEZONE}";
+    
+    function updateClock() {{
+        const now = new Date();
+        const options = {{
+            timeZone: targetTimezone,
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
+        }};
+        const formatter = new Intl.DateTimeFormat(undefined, options);
+        const formattedTime = formatter.format(now);
+        clockElement.innerText = `🕒 当前时间 ({targetTimezone}): ${{formattedTime}}`;
+    }}
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+"""
+st.components.v1.html(live_clock_html, height=35)
+# --- Live Clock Component using JavaScript ---
 
 
-
-
-
-
-
-# try:
-#     now_local = get_local_time()
-#     st.write(f"🕒 Current Server Time ({TARGET_TIMEZONE}): {now_local.strftime('%Y-%m-%d %H:%M:%S')}")
-# except Exception as e:
-#     st.warning(f"Could not display local time: {e}")
 
 
 st.markdown("---")
