@@ -204,7 +204,6 @@ live_clock_html = f"""
 <script>
     const clockElement = document.getElementById('live-clock');
     const targetTimezone = "{TARGET_TIMEZONE}";
-    
     function updateClock() {{
         const now = new Date();
         const options = {{
@@ -215,14 +214,13 @@ live_clock_html = f"""
         }};
         const formatter = new Intl.DateTimeFormat(undefined, options);
         const formattedTime = formatter.format(now);
-        clockElement.innerText = `🕒 当前时间 ({targetTimezone}): ${{formattedTime}}`;
+        clockElement.innerText = `🕒 Current Time (${{targetTimezone}}): ${{formattedTime}}`;
     }}
-    
     updateClock();
     setInterval(updateClock, 1000);
 </script>
 """
-st.components.v1.html(live_clock_html, height=35)
+st.components.v1.html(live_clock_html, height=50)
 # --- Live Clock Component using JavaScript ---
 
 
