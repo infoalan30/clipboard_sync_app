@@ -15,7 +15,7 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-
+st.set_page_config(page_title="Clipboards", page_icon="📋")
 # --- Configuration ---
 CACHE_TTL_SECONDS = 150000 # 5 minutes
 TARGET_TIMEZONE = "Asia/Shanghai" # Or choose another like "UTC", "America/New_York" etc.
