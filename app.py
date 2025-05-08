@@ -18,7 +18,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 # --- Configuration ---
-CACHE_TTL_SECONDS = 150000 # 5 minutes
+CACHE_TTL_SECONDS = 0.5*60*60 # 5 minutes
 TARGET_TIMEZONE = "Asia/Shanghai" # Or choose another like "UTC", "America/New_York" etc.
 
 # --- Helper Functions ---
