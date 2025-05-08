@@ -342,7 +342,8 @@ if timestamp_utc_float:
 
                 if data_type == "text":
                     st.write("**Type:** Text")
-                    st.text(cached_data_debug)
+                    # st.text(cached_data_debug)
+                    st.markdown(f"```\n{cached_data_debug}\n```")
                 elif data_type == "image":
                      size=len(cached_data_debug)
                      st.write("**Type:** Image")
